@@ -1,7 +1,7 @@
 import cv2
 import numpy as np
 
-red = [0, 0, 255]
+# red = [0, 0, 255]
 
 def get_limit(color):
     c = np.uint8([[color]])
@@ -55,7 +55,7 @@ def box(img):
         
     return img
 
-vid = cv2.VideoCapture('vid1.webm')
+vid = cv2.VideoCapture('vidio2.webm')
 
 while True:
     success, frame = vid.read()
