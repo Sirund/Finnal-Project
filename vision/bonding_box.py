@@ -53,7 +53,7 @@ def box(img):
         cv2.rectangle(img,(x,y), (x+w,y+h), (0,0,255), 3)
         cv2.putText(img, 'RED BALL', (x,y-10), cv2.FONT_HERSHEY_SIMPLEX, 0.2, (0,0,255), 2)
         
-    return red_mask
+    return img
 
 vid = cv2.VideoCapture('vid1.webm')
 
