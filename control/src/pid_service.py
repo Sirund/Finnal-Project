@@ -1,10 +1,15 @@
+#!/usr/bin/env python
+
+from magang2.srv import pidSet,pidSetResponse
+import rospy
+
 class PID:
     def __init__(self, P, I, D, Target):
         self.__p = P
         self.__i = I
         self.__d = D
         self.__target = Target
-        self.__feedback = 0
+        self.__feedback = 0 
         self.__last_err = 0
 
         self.__max_i = 1000
@@ -37,7 +42,7 @@ class PID:
         self.__last_err = self.__cur_err
         
         return output
-    
+
 #==================================================================================================================#
 
     @property
@@ -124,3 +129,43 @@ class PID:
     def output_bound(self, upper, lower):
         self.__max_out = upper
         self.__min_out = lower
+
+#==================================================================================================================#
+
+def initiate_pid(req):
+    cal = PID(req.kp, req.ki, req.kd, req.target)
+    output = cal.calculation()
+    print(f'pid result = {output}')
+
+    response = pidSetResponse()
+    response.result = output
+
+    return response
+
+def set_pid(req):
+    pass
+
+def set_p(req):
+    pass
+
+def set_i(req):
+    pass
+
+def set_d(req):
+    pass
+
+def set_feedback(req):
+    pass
+
+def get_pid(req):
+    pass
+
+def main_server():
+    rospy.init_node('PID_service')
+    i = rospy.Service('Initiate_PID', pidSet, initiate_pid)
+    # p = rospy.Service('Set_P_Value', pidSet, set_p)
+    print("Ready to set PID.")
+    rospy.spin()
+
+if __name__ == "__main__":
+    main_server()
