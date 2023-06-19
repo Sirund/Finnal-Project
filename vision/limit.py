@@ -7,13 +7,13 @@ def empty(a):
 cv2.namedWindow("Image")
 
 cv2.createTrackbar("Hue Min", "Image", 0, 179, empty)
-cv2.createTrackbar("Hue Max", "Image", 10, 179, empty)
-cv2.createTrackbar("Sat Min", "Image", 110, 255, empty)
-cv2.createTrackbar("Sat Max", "Image", 240, 255, empty)
-cv2.createTrackbar("Val Min", "Image", 153, 255, empty)
+cv2.createTrackbar("Hue Max", "Image", 179, 179, empty)
+cv2.createTrackbar("Sat Min", "Image", 0, 255, empty)
+cv2.createTrackbar("Sat Max", "Image", 255, 255, empty)
+cv2.createTrackbar("Val Min", "Image", 0, 255, empty)
 cv2.createTrackbar("Val Max", "Image", 255, 255, empty)
 
-vid = cv2.VideoCapture("vidio2.webm")
+vid = cv2.VideoCapture("vidio.webm")
 
 while True:
     success, img = vid.read()
@@ -33,9 +33,7 @@ while True:
     upper = np.array(([h_max, s_max, v_max]))
     imgFilter = cv2.inRange(imgHSV, lower, upper)
     imgResult = cv2.bitwise_and(img, img, mask=imgFilter)
-    # imgAll = stackImages(0.6, ([imgFilter, img]))
 
     cv2.imshow("Image", imgResult)
     if cv2.waitKey(100) & 0xFF ==ord('q'):
         break
-
