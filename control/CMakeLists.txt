@@ -164,9 +164,10 @@ include_directories(
 catkin_install_python(PROGRAMS
   src/talker.py
   src/listener.py
-  src/pid_server.py
-  src/pid_client.py
-  src/pid_controller.py
+  src/pid_initiate.py
+  src/pid_service.py
+  src/pid_set_feedback.py
+  src/pid_set_PID.py
   DESTINATION ${CATKIN_PACKAGE_BIN_DESTINATION}
 )
 

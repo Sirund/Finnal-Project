@@ -1,6 +1,5 @@
-float32 kp
-float32 ki
-float32 kd
-float32 target
+float32 nP
+float32 nI
+float32 nD
 ---
-float32 result
+float32 nResult

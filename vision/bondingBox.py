@@ -1,8 +1,8 @@
 import cv2
 import numpy as np
 
-def box(img):
-    imgHSV = cv2.cvtColor(img, cv2.COLOR_BGR2HSV)
+def box(frame):
+    frameHSV = cv2.cvtColor(frame, cv2.COLOR_BGR2HSV)
 
     #Merah
     red_low = np.array([141, 143, 21])
@@ -20,10 +20,10 @@ def box(img):
     yellow_low = np.array([20, 100, 100])
     yellow_up = np.array([40, 255, 255])
 
-    red_mask = cv2.inRange(imgHSV, red_low, red_up)
-    green_mask = cv2.inRange(imgHSV, green_low, green_up)
-    blue_mask = cv2.inRange(imgHSV, blue_low, blue_up)
-    yellow_mask = cv2.inRange(imgHSV, yellow_low, yellow_up)    
+    red_mask = cv2.inRange(frameHSV, red_low, red_up)
+    green_mask = cv2.inRange(frameHSV, green_low, green_up)
+    blue_mask = cv2.inRange(frameHSV, blue_low, blue_up)
+    yellow_mask = cv2.inRange(frameHSV, yellow_low, yellow_up)    
 
 
     #Merah
@@ -34,23 +34,43 @@ def box(img):
         approx = cv2.approxPolyDP(cnt, 0.02*peri, True)
         x, y, w, h = cv2.boundingRect(approx)
         if area > 100:
-            cv2.rectangle(img,(x,y), (x+w,y+h), (0,0,255), 3)
-            cv2.putText(img, 'RED BALL', (x,y-10), cv2.FONT_HERSHEY_SIMPLEX, 0.5, (0,0,255), 2)
+            cv2.rectangle(frame,(x,y), (x+w,y+h), (0,0,255), 2)
+            cv2.putText(frame, 'RED BALL', (x,y-10), cv2.FONT_HERSHEY_SIMPLEX, 0.5, (0,0,255), 2)
 
     # Hijau
     contours_green, hierarchy = cv2.findContours(green_mask, cv2.RETR_EXTERNAL, cv2.CHAIN_APPROX_SIMPLE)
     for cnt in contours_green:
         area = cv2.contourArea(cnt)
         peri = cv2.arcLength(cnt, True)
-        print(f'{area}, {peri}')
         approx = cv2.approxPolyDP(cnt, 0.02*peri, True)
         x, y, w, h = cv2.boundingRect(approx)
-        if area > 100:
-            print(f'{area}, {peri}')
-            cv2.rectangle(img,(x,y), (x+w,y+h), (0,128, 0), 3)
-            cv2.putText(img, 'GREEN BALL', (x,y-10), cv2.FONT_HERSHEY_SIMPLEX, 0.5, (0,128, 0), 2)
+        if area > 100: 
+            cv2.rectangle(frame,(x,y), (x+w,y+h), (0,128, 0), 2)
+            cv2.putText(frame, 'GREEN BALL', (x,y-10), cv2.FONT_HERSHEY_SIMPLEX, 0.5, (0,128, 0), 2)
+
+    # Biru
+    contours_blue, hierarchy = cv2.findContours(blue_mask, cv2.RETR_EXTERNAL, cv2.CHAIN_APPROX_SIMPLE)
+    for cnt in contours_blue:
+        area = cv2.contourArea(cnt)
+        peri = cv2.arcLength(cnt, True)
+        approx = cv2.approxPolyDP(cnt, 0.02*peri, True)
+        x, y, w, h = cv2.boundingRect(approx)
+        if area > 100: 
+            cv2.rectangle(frame,(x,y), (x+w,y+h), (0,128, 0), 2)
+            cv2.putText(frame, 'BLUE BALL', (x,y-10), cv2.FONT_HERSHEY_SIMPLEX, 0.5, (0,128, 0), 2)
+
+    # Kuning
+    contours_yellow, hierarchy = cv2.findContours(yellow_mask, cv2.RETR_EXTERNAL, cv2.CHAIN_APPROX_SIMPLE)
+    for cnt in contours_yellow:
+        area = cv2.contourArea(cnt)
+        peri = cv2.arcLength(cnt, True)
+        approx = cv2.approxPolyDP(cnt, 0.02*peri, True)
+        x, y, w, h = cv2.boundingRect(approx)
+        if area > 100: 
+            cv2.rectangle(frame,(x,y), (x+w,y+h), (0,128, 0), 2)
+            cv2.putText(frame, 'YELLOW BALL', (x,y-10), cv2.FONT_HERSHEY_SIMPLEX, 0.5, (0,128, 0), 2)
         
-    return img
+    return frame
 
 vid = cv2.VideoCapture('vidio.webm')
 

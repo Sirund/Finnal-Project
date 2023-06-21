@@ -34,6 +34,6 @@ while True:
     imgFilter = cv2.inRange(imgHSV, lower, upper)
     imgResult = cv2.bitwise_and(img, img, mask=imgFilter)
 
-    cv2.imshow("Image", imgResult)
+    cv2.imshow("Image", imgFilter)
     if cv2.waitKey(100) & 0xFF ==ord('q'):
         break
