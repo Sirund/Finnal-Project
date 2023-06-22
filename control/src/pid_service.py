@@ -55,94 +55,9 @@ class PID:
         self.__p = P
         self.__i = I
         self.__d = D
-#==================================================================================================================#
-
-    @property
-    def value_p(self):
-        return self.__p
     
-    @property
-    def value_i(self):
-        return self.__i
-    
-    @property
-    def value_d(self):
-        return self.__d    
-
-    @property
-    def value_proporsional(self):
-        return self.__cur_err * self.__p
-    
-    @property
-    def value_integral(self):
-        return self.__integral_cum * self.__i
-
-    @property
-    def value_derivative(self):
-        return self.__cycle_derivative * self.__d 
-
-    @property
-    def value_integral_cumulation(self):
-        return self.__integral_cum 
-    
-    @property
-    def target(self):
-        pass
-
-    # @property
-    # def pid(self):
-    #     pass
-
-    @property
-    def feedback(self):
-        pass
-
-    @property
-    def integral_limit(self):
-        pass
-
-    @property
-    def output_bound(self):
-        pass
-
-#==================================================================================================================#
-
-    @value_p.setter
-    def value_p(self, input):
-        self.__p = input
-
-    @value_i.setter
-    def value_i(self, input):
-        self.__i = input
-
-    @value_d.setter
-    def value_d(self, input):
-        self.__d = input
-
-    @target.setter
-    def target(self, input):
-        self.__target = input
-
-    # @pid.setter
-    # def set_pid(self, P, I, D):
-    #     self.__p = P
-    #     self.__i = I
-    #     self.__d = D
-
-    @feedback.setter
-    def set_feedback(self, input):
+    def feedback(self, input):
         self.__feedback = input
-
-    @integral_limit.setter
-    def integral_limit(self, max):
-        self.__max_i = max
-
-    @output_bound.setter
-    def output_bound(self, upper, lower):
-        self.__max_out = upper
-        self.__min_out = lower
-
-#==================================================================================================================#
 
 pid = PID(0, 0, 0, 0)
 
@@ -167,7 +82,7 @@ def set_pid(req):
     return response    
 
 def set_feedback(req):
-    pid.set_feedback = req.setF
+    pid.feedback(req.setF)
     output = pid.calculation()
     print(f'pid result = {output}')
 
