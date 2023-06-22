@@ -60,6 +60,8 @@ find_package(catkin REQUIRED COMPONENTS
 add_service_files(
   FILES
   pidSet.srv
+  pidInitiate.srv
+  pidFeedback.srv
 )
 
 ## Generate actions in the 'action' folder
@@ -162,12 +164,9 @@ include_directories(
 ## Mark executable scripts (Python etc.) for installation
 ## in contrast to setup.py, you can choose the destination
 catkin_install_python(PROGRAMS
-  src/talker.py
-  src/listener.py
-  src/pid_initiate.py
   src/pid_service.py
   src/pid_set_feedback.py
-  src/pid_set_PID.py
+  src/pid_set.py
   DESTINATION ${CATKIN_PACKAGE_BIN_DESTINATION}
 )
 

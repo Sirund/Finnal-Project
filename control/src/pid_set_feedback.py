@@ -14,7 +14,7 @@ def initiate_pid(feddback):
         print("Service call failed: %s"%e)
 
 if __name__ == "__main__":
-    rate = rospy.Rate(100)
+    rate = rospy.Rate(0.1)
     while True:
         rospy.Subscriber('mavros/global_position/velocity', TwistStamped, initiate_pid)
         rate.sleep()

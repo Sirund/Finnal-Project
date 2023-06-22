@@ -24,7 +24,7 @@ def receive():
             isi = pesan[3:]
             print(f'Pesan masuk: {isi}')
         else:
-            print('Password salah')
+            print('Password salah cuk')
 
 def truster_belakang_kanan():
     return 157

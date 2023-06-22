@@ -1,6 +1,8 @@
 #!/usr/bin/env python
 
-from magang2.srv import pidSet,pidSetResponse
+from magang2.srv import pidInitiate, pidInitiateResponse
+from magang2.srv import pidSet, pidSetResponse
+from magang2.srv import pidFeedback, pidFeedbackResponse
 import rospy
 
 class PID:
@@ -42,7 +44,17 @@ class PID:
         self.__last_err = self.__cur_err
         
         return output
+    
+    def initiate(self, kp, ki, kd, set_point):
+        self.__p = kp
+        self.__i = ki
+        self.__d = kd
+        self.__target = set_point
 
+    def set(self, P, I, D):
+        self.__p = P
+        self.__i = I
+        self.__d = D
 #==================================================================================================================#
 
     @property
@@ -77,9 +89,9 @@ class PID:
     def target(self):
         pass
 
-    @property
-    def pid(self):
-        pass
+    # @property
+    # def pid(self):
+    #     pass
 
     @property
     def feedback(self):
@@ -111,11 +123,11 @@ class PID:
     def target(self, input):
         self.__target = input
 
-    @pid.setter
-    def set_pid(self, P, I, D):
-        self.__p = P
-        self.__i = I
-        self.__d = D
+    # @pid.setter
+    # def set_pid(self, P, I, D):
+    #     self.__p = P
+    #     self.__i = I
+    #     self.__d = D
 
     @feedback.setter
     def set_feedback(self, input):
@@ -132,38 +144,43 @@ class PID:
 
 #==================================================================================================================#
 
+pid = PID(0, 0, 0, 0)
+
 def initiate_pid(req):
-    cal = PID(req.kp, req.ki, req.kd, req.target)
-    output = cal.calculation()
+    pid.initiate(req.kp, req.ki, req.kd, req.target)
+    output = pid.calculation()
     print(f'pid result = {output}')
 
-    response = pidSetResponse()
+    response = pidInitiateResponse()
     response.result = output
 
     return response
 
 def set_pid(req):
-    pass
+    pid.set(req.nP, req.nI, req.nD)
+    output = pid.calculation()
+    print(f'pid result = {output}')
 
-def set_p(req):
-    pass
+    response = pidSetResponse()
+    response.nResult = output
 
-def set_i(req):
-    pass
-
-def set_d(req):
-    pass
+    return response    
 
 def set_feedback(req):
-    pass
+    pid.set_feedback = req.setF
+    output = pid.calculation()
+    print(f'pid result = {output}')
 
-def get_pid(req):
-    pass
+    response = pidFeedbackResponse()
+    response.newResult = output
+
+    return response    
 
 def main_server():
     rospy.init_node('PID_service')
-    i = rospy.Service('Initiate_PID', pidSet, initiate_pid)
-    # p = rospy.Service('Set_P_Value', pidSet, set_p)
+    rospy.Service('Initiate_PID', pidInitiate, initiate_pid)
+    rospy.Service('Set_PID_Value', pidSet, set_pid)
+    rospy.Service('Set_Feedback', pidFeedback, set_feedback)
     print("Ready to set PID.")
     rospy.spin()
 
