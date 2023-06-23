@@ -3,6 +3,7 @@
 from magang2.srv import pidInitiate, pidInitiateResponse
 from magang2.srv import pidSet, pidSetResponse
 from magang2.srv import pidFeedback, pidFeedbackResponse
+from magang2.msg import truster
 import rospy
 
 class PID:
@@ -63,18 +64,23 @@ pid = PID(0, 0, 0, 0)
 
 def initiate_pid(req):
     pid.initiate(req.kp, req.ki, req.kd, req.target)
-    output = pid.calculation()
-    print(f'pid result = {output}')
+    output = truster()
+    output.vel = pid.calculation()
+    output.pesan = 'PID result:'
+    print(f'{output.pesan} {output.vel}')
 
     response = pidInitiateResponse()
-    response.result = output
+    response.result = output.vel
 
     return response
 
 def set_pid(req):
+
     pid.set(req.nP, req.nI, req.nD)
-    output = pid.calculation()
-    print(f'pid result = {output}')
+    output = truster()
+    output.vel = pid.calculation()
+    output.pesan = 'PID result: '
+    print(f'{output.pesan} {output.vel}')
 
     response = pidSetResponse()
     response.nResult = output
@@ -83,8 +89,10 @@ def set_pid(req):
 
 def set_feedback(req):
     pid.feedback(req.setF)
-    output = pid.calculation()
-    print(f'pid result = {output}')
+    output = truster()
+    output.pesan = 'PID result: '
+    output.vel = pid.calculation()
+    print(f'{output.pesan} {output.vel}')
 
     response = pidFeedbackResponse()
     response.newResult = output
